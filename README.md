@@ -1,4 +1,4 @@
-# mysql_enumerator 
+# Patch Compliance
 
 Patch Compliance is a tool that is used to ensure that your networks windows devices are updated to the latest versions. The tool will produce a report that shows any missing patches, along with their corresponding devices, so an administrator can quickly identify problem areas and provide fixes. The tool is designed to be run as a scheduled job so that it can retrieve the latest patch data on a regular basis. 
 
@@ -20,7 +20,12 @@ Patch Compliance is a tool that is used to ensure that your networks windows dev
 
 
 ## Installation
-
+1. Open the Windows Task Scheduler
+2. In the directory menu on the left, right click the task scheduler library and create a new folder for your job
+3. With the new folder selected, click the create task option in the action menu
+4. In the general tab, fill out the name and select a user or group. It is reccommended to use a service account
+5. In the triggers tab, click new and choose a trigger to start the job. It is reccommended to use a timed schedule and run it once a day
+6. In the actions tab, click new
 ```bash
 # Clone this repository
 $ git clone https://github.com/chrome-dino/mysql_enumerator.git
