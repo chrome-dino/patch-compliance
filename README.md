@@ -7,7 +7,7 @@ Patch Compliance is a tool that is used to ensure that your networks windows dev
 
 * <a href="#key-features">Key Features</a></br>
 * <a href="#installation">Installation</a></br>
-* * <a href="#video">Video</a></br>
+* <a href="#video">Video</a></br>
 * <a href="#notes">Notes</a></br>
 * <a href="#license">License</a>
 
