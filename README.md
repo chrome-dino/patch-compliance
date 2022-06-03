@@ -7,6 +7,7 @@ Patch Compliance is a tool that is used to ensure that your networks windows dev
 
 * <a href="#key-features">Key Features</a></br>
 * <a href="#installation">Installation</a></br>
+* * <a href="#video">Video</a></br>
 * <a href="#notes">Notes</a></br>
 * <a href="#license">License</a>
 
@@ -21,25 +22,26 @@ Patch Compliance is a tool that is used to ensure that your networks windows dev
 
 ## Installation
 
-1. Populate the hosts.txt file with a list of fqdns or IPs, one per line
-2. Open the Windows Task Scheduler
-3. In the directory menu on the left, right click the task scheduler library and create a new folder for your job
-4. With the new folder selected, click the create task option in the action menu
-5. In the general tab, fill out the name and select a user or group. It is reccommended to use a service account
-6. In the triggers tab, click new and choose a trigger to start the job. It is reccommended to use a timed schedule and run it once a day
-7. In the actions tab, click new and select the start a program option
-8. Add '/k c:\PATH TO SCRITPS\patch_batch.bat' to the arguments and click finish
+1. Ensure Python is installed to a compatible version and install any required modules
+2. Populate the hosts.txt file with a list of fqdns or IPs, one per line
+3. Open the Windows Task Scheduler
+4. In the directory menu on the left, right click the task scheduler library and create a new folder for your job
+5. With the new folder selected, click the create task option in the action menu
+6. In the general tab, fill out the name and select a user or group. It is reccommended to use a service account
+7. In the triggers tab, click new and choose a trigger to start the job. It is reccommended to use a timed schedule and run it once a day
+8. In the actions tab, click new and select the start a program option
+9. Add '/k c:\PATH TO SCRITPS\patch_batch.bat' to the arguments and click finish
 
 
 Uses the following non standard libraries:
+* bs4
 * pandas
-* pymysql
-* setuptools
-* cryptography
-* openpyxl
-* 
 
-### Video
+Uses the following programs:
+* cmd.exe
+* PowerShell
+
+## Video
 * https://youtu.be/ENCz8EvVfuc
 
 
