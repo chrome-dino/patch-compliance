@@ -25,14 +25,9 @@ Patch Compliance is a tool that is used to ensure that your networks windows dev
 3. With the new folder selected, click the create task option in the action menu
 4. In the general tab, fill out the name and select a user or group. It is reccommended to use a service account
 5. In the triggers tab, click new and choose a trigger to start the job. It is reccommended to use a timed schedule and run it once a day
-6. In the actions tab, click new
-```bash
-# Clone this repository
-$ git clone https://github.com/chrome-dino/mysql_enumerator.git
+6. In the actions tab, click new and select the start a program option
+7. Add '/k c:\PATH TO SCRITPS\patch_batch.bat' to the arguments and click finish
 
-# From the directory containing your git projects
-$ pip install -e mysql_enumerator
-```
 
 Uses the following non standard libraries:
 * pandas
