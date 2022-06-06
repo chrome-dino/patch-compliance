@@ -66,7 +66,7 @@ optional arguments:
   -h, --help            show this help message and exit
   -f FILE, --file FILE  Name of the host file containing line seperated list
                         of IPs or FQDNs. Defaults to hosts.txt
-  -o OPERATING_SYSTEMS, --operating-systems OPERATING_SYSTEMS
+  -o OPERATING_SYSTEMS, --operating_systems OPERATING_SYSTEMS
                         Comma seperated list of operating systems. Valid OSs
                         are as follows: 'Windows XP','Windows XP x64
                         Edition','Windows Vista','Windows 7','Windows
