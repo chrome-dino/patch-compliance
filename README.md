@@ -1,6 +1,6 @@
 # Patch Compliance
 
-Patch Compliance is a tool that is used to ensure that your networks windows devices are updated to the latest versions. The tool will produce a report that shows any missing patches, along with their corresponding devices, so an administrator can quickly identify problem areas and provide fixes. The tool is best used as a scheduled job so that it can retrieve the latest patch data on a regular basis. 
+Patch Compliance is a tool that is used to ensure that your networks windows devices are updated to the latest versions. The tool will automatically search for the latest released Windows Patches from a wide list of Windows operating systems. This will be compared against the patch status of your network and will produce a report that shows any missing patches, along with their corresponding devices, so an administrator can quickly identify problem areas and provide fixes. The tool is best used as a scheduled job so that it can retrieve the latest patch data on a regular basis. 
 
 
 ## Table of Contents
@@ -24,10 +24,13 @@ Patch Compliance is a tool that is used to ensure that your networks windows dev
 
 ```bash
 # Clone this repository
-$ git clone https://github.com/chrome-dino/mysql_enumerator.git
+$ git clone https://github.com/chrome-dino/patch_compliance.git
 
 # From the directory containing your git projects
-$ pip install -e mysql_enumerator
+$ pip install -e patch_compliance
+```
+
+Populate the included hosts.txt file or a text file of your choosing with a line separated list of IPs/FQDNs. If using your own file be sure to use the host file flag.
 
 Uses the following non standard libraries:
 * bs4
@@ -72,12 +75,6 @@ options:
 ```bash
 # run the report generator with a standard user
 $ py -m mysql_enumerator -db hostname -u user -p password
-
-# run the report generator with elevated permissions and extract info on database users
-$ py -m mysql_enumerator -db hostname -u root -p password -a
-
-# extract the rows from a table
-$ py -m mysql_enumerator -db hostname -u user -p password -s schema_name -t table_name1,table_name2
 ```
 
 
