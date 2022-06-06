@@ -25,6 +25,8 @@ def main():
 
     os_list = args.operating_systems.split(',')
     os_final = []
+    
+    # catch in valid OS entries
     for x in os_list:
         if x.strip() not in os_whitelist:
             print(x.strip() + ' is an invalid OS. Valid OSs are as follows:')
