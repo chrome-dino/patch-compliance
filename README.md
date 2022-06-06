@@ -30,7 +30,23 @@ $ git clone https://github.com/chrome-dino/patch_compliance.git
 $ pip install -e patch_compliance
 ```
 
-Populate the included hosts.txt file or a text file of your choosing with a line separated list of IPs/FQDNs. If using your own file be sure to use the host file flag.
+Populate the included hosts.txt file or a text file of your choosing with a line separated list of IPs/FQDNs and OSs. The format of each line should be as follows: IP/OS. If using your own file be sure to use the host file flag.
+
+The following are valid OS names:
+* Windows XP
+* Windows XP x64 Edition
+* Windows Vista
+* Windows 7
+* Windows 8
+* Windows 10
+* Windows Server 2003
+* Windows Server 2003 R2
+* Windows Server 2008
+* Windows Server 2008 R2
+* Windows Server 2012
+* Windows Server 2012 R2
+* Windows Server 2016
+* Windows Server 2019
 
 Uses the following non standard libraries:
 * bs4
