@@ -15,7 +15,10 @@ class PatchCompliance():
         self.kbs = {}
         self.kb_results_json = {}
 
+        
+    # retrieve patch data from official microsoft source and parse out the relevant data
     def released_patches(self):
+        # TODO: add date functionality back in after implementing multipage parsing
         #today = date.today()
         #end_date = today - relativedelta(months=2)
         kbs = {}
@@ -48,6 +51,7 @@ class PatchCompliance():
                                     kb_set.append(split_file[x].lstrip())
                                 x +=1
                         
+                        # TODO: add date functionality back in after implementing multipage parsing
                         #compare_date = datetime.strptime(kb_set[2].replace('\r',''), '%m/%d/%Y').date()
                         #if end_date > compare_date:
                         #    break
@@ -56,7 +60,7 @@ class PatchCompliance():
                 kbs[os]=updates
         return kbs
 
-
+    # parse through patch data collected via powershell and format into JSON
     def host_patches(self):
         kb_results_json = {}
 
@@ -89,7 +93,7 @@ class PatchCompliance():
         return kb_results_json
 
 
-
+    # compare microsoft patch data to host patch data and return differences
     def compare_patch_data(self):
         final = {}
 
@@ -118,7 +122,7 @@ class PatchCompliance():
 
     def run(self):
 
-
+        # run powershell script to retrieve host patch data
         cmd = ["PowerShell", "-ExecutionPolicy", "Unrestricted", "-File", ".\\get_patch.ps1",self.host_file]
 
         ec = subprocess.call(cmd)
@@ -128,7 +132,7 @@ class PatchCompliance():
         self.kb_results_json = self.host_patches()
         final = self.compare_patch_data()
 
-
+        # print report
         for host in final:
             print('REPORT for host: ' + host)
             print('------------------------------------------')
