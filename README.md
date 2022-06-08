@@ -27,7 +27,7 @@ Patch Compliance is a tool that is used to ensure that your networks windows dev
 $ git clone https://github.com/chrome-dino/patch_compliance.git
 
 # From the directory containing your git projects
-$ pip install -e patch_compliance
+$ pip install -e patch-compliance
 ```
 
 Populate the included hosts.txt file or a text file of your choosing with a line separated list of IPs/FQDNs and OSs. The format of each line should be as follows: IP/OS. If using your own file be sure to use the host file flag.
