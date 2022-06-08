@@ -50,6 +50,7 @@ The following are valid OS names:
 
 Uses the following non standard libraries:
 * bs4
+* requests
 
 Requires the following:
 * PowerShell
