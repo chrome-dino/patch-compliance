@@ -8,9 +8,12 @@ import subprocess
 
 
 class PatchCompliance():
-    def __init__(self, host_file='', os_list=[]):
+    def __init__(self, os_list, host_file=None):
         # Intialize member variables
-        self.host_file = host_file
+        if host_file is None:
+            self.host_file = '.\\patch_compliance\\src\\patch_compliance\\hosts.txt'
+        else:
+            self.host_file = host_file
         self.os_list = os_list
         self.kbs = {}
         self.kb_results_json = {}
@@ -28,11 +31,14 @@ class PatchCompliance():
             soup = BeautifulSoup(html_text, 'html.parser')
             table = soup.find('table')
             rows = table.find_all('tr')
+            updates = []
             for i in rows:
                 table_data = i.find_all('td')
                 data = [j.text for j in table_data]
         
-                updates = []
+                
+                if len(data) == 0:
+                    continue
                 split_file = data[0].split('\n')
                 for x in range(len(split_file)):
                     if 'KB' in split_file[x] and '(' in split_file[x]:
@@ -55,16 +61,16 @@ class PatchCompliance():
                         #compare_date = datetime.strptime(kb_set[2].replace('\r',''), '%m/%d/%Y').date()
                         #if end_date > compare_date:
                         #    break
-                        updates.append({'kb':kb,'title':title,'type':kb_set[1],'install_date':kb_set[2]})
+                        updates.append({'kb':kb.replace('\r',''),'title':title.replace('\r',''),'type':kb_set[1].replace('\r',''),'install_date':kb_set[2].replace('\r','')})
         
-                kbs[os]=updates
+                kbs[os_search]=updates
         return kbs
 
     # parse through patch data collected via powershell and format into JSON
     def host_patches(self):
         kb_results_json = {}
 
-        for root, dirs, files in os.walk('.\host_data'):
+        for root, dirs, files in os.walk('.\patch_compliance\src\patch_compliance\host_data'):
             for file in files:
                 if 'host_' in file:
                     
@@ -75,21 +81,30 @@ class PatchCompliance():
                         host_data = content_decode.split('\n')
 
                         kb_results_json[file[5:][:-4]] = []
-
+                        
                         os_parsed = host_data.pop(-1)
-
+                        while('Windows' not in os_parsed):
+                            os_parsed = host_data.pop(-1)
+                        
                         for line in host_data:
+                            
                             kb = ""
+                            install_date = ''
+                            install_type = ''
                             if len(line.split()) != 0 and line.split()[0] != "Source" and "----" not in line.split()[0]:
-                                for item in line.split()[0]:
+
+                                for item in line.split():
+                                    
                                     if "KB" in item:
                                         kb = item
+                                    if kb == '':
+                                        continue
                                     if "AUTHORITY" in item:
                                         install_type = item
                                     if '/' in item:
                                         item = item.split(".",1)[0]
                                         install_date = item
-                                kb_results_json[file[5:][:-4]].append({"kb":kb,"installedon":install_date,"type":install_type, 'os':os_parsed})
+                                kb_results_json[file[5:][:-4]].append({"kb":kb.replace('\r',''),"installedon":install_date.replace('\r',''),"type":install_type.replace('\r',''), 'os':os_parsed})
         return kb_results_json
 
 
@@ -99,23 +114,26 @@ class PatchCompliance():
 
         for os in self.os_list:
             for kb in range(len(self.kbs[os])):
-
+                
                 for host in self.kb_results_json:
-                    if self.kb_results_json[host]['os'] != os:
-                        continue
-                    final[host] = {'missing':[],'installed':[]}
+                    if host not in final:
+                        final[host] = {'missing':[],'installed':[]}
                     found = False
                     install_type='Automatic'
-                    if 'AUTHORITY' not in self.kb_results_json[host]['type']:
-                        install_type = "Manual"
-                    for host_kb in self.kb_results_json[host]['kbs']:
+                    for host_kb in self.kb_results_json[host]:
+
+                        if host_kb['os'] != os:
+                            continue
+                        if 'AUTHORITY' not in host_kb['type']:
+                            install_type = "Manual"
                         if host_kb['kb'] == self.kbs[os][kb]['kb']:
                             found = True
                             break
+
                     if found:
-                        final[host]['installed'].append({"kb":kb,"InstalledOn":host_kb['installedon'],"InstallType":install_type,'title':self.kbs[os][kb]['title'],'update_type':self.kbs[os][kb]['type'],'release_date':self.kbs[os][kb]['install_date']})
+                        final[host]['installed'].append({"kb":self.kbs[os][kb]['kb'],"InstalledOn":host_kb['installedon'],"InstallType":install_type,'title':self.kbs[os][kb]['title'],'update_type':self.kbs[os][kb]['type'],'release_date':self.kbs[os][kb]['install_date']})
                     else:
-                        final[host]['missing'].append({"kb":kb,"InstalledOn":'NA',"InstallType":'NA',"ComputerName":host,'title':self.kbs[os][kb]['title'],'update_type':self.kbs[os][kb]['type'],'release_date':self.kbs[os][kb]['install_date']})
+                        final[host]['missing'].append({"kb":self.kbs[os][kb]['kb'],"InstalledOn":'NA',"InstallType":'NA',"ComputerName":host,'title':self.kbs[os][kb]['title'],'update_type':self.kbs[os][kb]['type'],'release_date':self.kbs[os][kb]['install_date']})
         return final
 
 
@@ -123,13 +141,15 @@ class PatchCompliance():
     def run(self):
 
         # run powershell script to retrieve host patch data
-        cmd = ["PowerShell", "-ExecutionPolicy", "Unrestricted", "-File", ".\\get_patch.ps1",self.host_file]
-
+        path = '.\\patch_compliance\\src\\patch_compliance\\'
+        cmd = ["PowerShell", "-ExecutionPolicy", "Unrestricted", "-File", path + "get_patch.ps1",self.host_file]
+        # cmd = ["PowerShell",'pwd']
         ec = subprocess.call(cmd)
-        print("Powershell returned: {0:d}".format(ec))
 
         self.kbs = self.released_patches()
+
         self.kb_results_json = self.host_patches()
+
         final = self.compare_patch_data()
 
         # print report
@@ -139,10 +159,10 @@ class PatchCompliance():
             print('')
             print('\tMissing Patches:')
             for y in final[host]['missing']:
-                print('\t\t' + y)
+                print('\t\t' + str(y))
             print('')
             print('\tInstalled Patches:')
             for y in final[host]['installed']:
-                print('\t\t' + y)
+                print('\t\t' + str(y))
             print()
             print()
