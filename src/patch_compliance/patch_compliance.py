@@ -69,7 +69,10 @@ class PatchCompliance():
     # parse through patch data collected via powershell and format into JSON
     def host_patches(self):
         kb_results_json = {}
-
+        for root, dirs, files in os.walk('.\patch_compliance\src\patch_compliance\host_data'):
+            for file in files:
+                if 'host_' in file:
+                    os.remove(os.path.join(root,file))             
         for root, dirs, files in os.walk('.\patch_compliance\src\patch_compliance\host_data'):
             for file in files:
                 if 'host_' in file:
