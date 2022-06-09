@@ -1,12 +1,12 @@
 $content = Get-Content -Path $Args[0]
-for each($host in $content){
-	$host_split = $host.Split("/")
+foreach ($item in $content){
+	$host_split = $item.Split("/")
 	$computer = $host_split[0]
 	$os = $host_split[1]
-	if(Test-Connection -ComputerName $host){
-		Get-HotFix -ComputerName ${computer} > "./host_data/host_${computer}.txt"
-		Add-Content "./host_data/host_${computer}.txt" "`n${os}"
+	if(Test-Connection -ComputerName $computer){
+		Get-HotFix -ComputerName ${computer} > "./patch_compliance/src/patch_compliance/host_data/host_${computer}.txt"
+		Add-Content "./patch_compliance/src/patch_compliance/host_data/host_${computer}.txt" "`n${os}"
 	}else{
-		Write-Output "Failed to connect to : $(items)"
+		Write-Output "Failed to connect to : ${item}"
 	}
 }
