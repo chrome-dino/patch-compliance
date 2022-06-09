@@ -32,6 +32,18 @@ $ pip install -e patch-compliance
 
 Populate the included hosts.txt file or a text file of your choosing with a line separated list of IPs/FQDNs and OSs. The format of each line should be as follows: IP/OS. If using your own file be sure to use the host file flag.
 
+The device running the tools must be able to connect to the devices being auditing. The devices being audited should have the WinRM enabled, with permissions for the device running the tool to execute commands. The firewall should have rules allowing inbound connections from the auditing device and the devices should all belong to the same work group.
+
+Uses the following non standard libraries:
+* bs4
+* requests
+
+Requires the following:
+* PowerShell
+
+
+## How To Use
+
 The following are valid OS names:
 * Windows XP
 * Windows XP x64 Edition
@@ -48,15 +60,6 @@ The following are valid OS names:
 * Windows Server 2016
 * Windows Server 2019
 
-Uses the following non standard libraries:
-* bs4
-* requests
-
-Requires the following:
-* PowerShell
-
-
-## How To Use
 
 ### Help Menu
 
@@ -83,7 +86,6 @@ optional arguments:
 ### Examples
 
 ```bash
-# run the report generator with a standard user
 $ py -m patch_compliance -f hosts.txt -o "Windows 7, Windows Server 2003 R2"
 ```
 
